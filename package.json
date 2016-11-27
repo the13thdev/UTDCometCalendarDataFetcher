@@ -1,0 +1,14 @@
+{
+  "name": "comet_calendar_data_fetcher",
+  "version": "0.0.0",
+  "description": "Chrome Extension for displaying UTD Comet Calendar",
+  "main": "server.js",
+  "author": "Vijit Dhingra",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cheerio": "^0.22.0",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "request": "^2.76.0"
+  }
+}
