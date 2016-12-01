@@ -11,7 +11,12 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 //Data Variables
-var current_date_time =  new Date();
+var now = new Date();
+//getting current_date_time in UTC
+var current_date_time = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+//To make current_date_time match the current date time in dallas.
+current_date_time.setHours(current_date_time.getHours()-6);
+
 var urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(current_date_time.getMonth()+1)+"&year="+current_date_time.getFullYear()+"&type=day"+current_date_time.getDate();
 var urlRef="https://www.utdallas.edu/calendar";
 
