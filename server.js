@@ -19,6 +19,18 @@ current_date_time.setHours(current_date_time.getHours()-6);
 
 var urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(current_date_time.getMonth()+1)+"&year="+current_date_time.getFullYear()+"&type=day"+current_date_time.getDate();
 var urlRef="https://www.utdallas.edu/calendar";
+//url for fetching event details, ex: http://www.utdallas.edu/calendar/event.php?id=1220426040
+var urlEventDetails="http://www.utdallas.edu/calendar/event.php?id=";
+
+var updateCurrentDateTimeAndUrlWeb = function(){
+  //Data Variables
+  now = new Date();
+  //getting current_date_time in UTC
+  current_date_time = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+  //To make current_date_time match the current date time in dallas.
+  current_date_time.setHours(current_date_time.getHours()-6);
+  urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(current_date_time.getMonth()+1)+"&year="+current_date_time.getFullYear()+"&type=day"+current_date_time.getDate();
+};
 
 //middleware for logging requests
 app.use(morgan('dev'));
@@ -34,6 +46,8 @@ app.get('/',function(req,res,next){
 });
 
 app.get('/data',function(req,res,next){
+  //to update current_date_time as day may change, and accordingly the urlWeb.
+  updateCurrentDateTimeAndUrlWeb();
   request.get({ url: urlWeb, headers: {'Referer':urlRef}}, function(error, response, body){
 
     if(!error && response.statusCode==200){
@@ -72,7 +86,23 @@ app.get('/data',function(req,res,next){
 
 app.get('/eventData',function(req,res,next){
     console.log(req.query.event_id);
-    res.send({content:"event data for "+req.query.event_id});
+    request.get({ url: urlEventDetails+req.query.event_id}, function(error, response, body){
+
+      if(!error && response.statusCode==200){
+        //Data Successfully loaded
+        console.log("event details fetched");
+        //feeding body through cheerio
+        var $ = cheerio.load(body);
+        var data={ location:$('.locationholder span').text(), description_html: $('.detailholder.description').html().trim(), contact_html: $('.contactholder').html().trim()};
+        //console.log($('.detailholder.description').html().trim());
+        //console.log($('.contactholder').html().trim());
+        res.json(data);
+      }  else{
+        //Data could not be loadedD:
+        console.log("Could not fetch event details");
+        console.log(error);
+      }
+    });
 });
 
 /**
