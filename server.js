@@ -24,12 +24,9 @@ var urlEventDetails="http://www.utdallas.edu/calendar/event.php?id=";
 
 var updateCurrentDateTimeAndUrlWeb = function(){
   //Data Variables
-  now = new Date();
-  //getting current_date_time in UTC
-  current_date_time = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-  //To make current_date_time match the current date time in dallas.
-  current_date_time.setMinutes(current_date_time.getMinutes()-current_date_time.getTimezoneOffset());
-  urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(current_date_time.getMonth()+1)+"&year="+current_date_time.getFullYear()+"&type=day"+current_date_time.getDate();
+  time_at_utd = moment().tz("US/Central");
+  var urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(time_at_utd.month()+1)+"&year="+time_at_utd.year()+"&type=day"+time_at_utd.date();
+  console.log(urlWeb);
 };
 
 //middleware for logging requests
