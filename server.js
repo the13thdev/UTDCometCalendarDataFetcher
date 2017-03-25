@@ -43,7 +43,7 @@ app.get('/',function(req,res,next){
 });
 
 app.get('/data',function(req,res,next){
-  //to update current_date_time as day may change, and accordingly the urlWeb.
+  //to update time_at_utd as day may change, and accordingly the urlWeb.
   updateCurrentDateTimeAndUrlWeb();
   request.get({ url: urlWeb, headers: {'Referer':urlRef}}, function(error, response, body){
 
@@ -51,7 +51,7 @@ app.get('/data',function(req,res,next){
       //Data Successfully loaded
       console.log("data fetched");
 
-      var data={ events:[], date:{day:current_date_time.getDate() ,month:current_date_time.getMonth()+1, year:current_date_time.getFullYear()}};
+      var data={ events:[], date:{day:time_at_utd.date() ,month:time_at_utd.month()+1, year:time_at_utd.year()}};
       //feeding body through cheerio
       var $ = cheerio.load(body);
       var i,rows;
