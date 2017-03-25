@@ -14,8 +14,10 @@ app.set('port', (process.env.PORT || 5000));
 
 //Data Variables
 var time_at_utd = moment().tz("US/Central");
+console.log(time_at_utd);
 
 var urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(time_at_utd.month()+1)+"&year="+time_at_utd.year()+"&type=day"+time_at_utd.date();
+console.log(urlWeb);
 var urlRef="https://www.utdallas.edu/calendar";
 //url for fetching event details, ex: http://www.utdallas.edu/calendar/event.php?id=1220426040
 var urlEventDetails="http://www.utdallas.edu/calendar/event.php?id=";
@@ -83,7 +85,7 @@ app.get('/data',function(req,res,next){
 });
 
 app.get('/eventData',function(req,res,next){
-    console.log(req.query.event_id);
+    //console.log(req.query.event_id);
     request.get({ url: urlEventDetails+req.query.event_id}, function(error, response, body){
 
       if(!error && response.statusCode==200){
