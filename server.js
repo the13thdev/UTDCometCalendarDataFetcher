@@ -4,6 +4,8 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var request = require('request');
 var cheerio = require('cheerio');
+var moment = require('moment-timezone');
+
 
 var app = express();
 
@@ -11,13 +13,9 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 //Data Variables
-var now = new Date();
-//getting current_date_time in UTC
-var current_date_time = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-//To make current_date_time match the current date time in dallas.
-current_date_time.setMinutes(current_date_time.getMinutes()-current_date_time.getTimezoneOffset());
+var time_at_utd = moment().tz("US/Central");
 
-var urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(current_date_time.getMonth()+1)+"&year="+current_date_time.getFullYear()+"&type=day"+current_date_time.getDate();
+var urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(time_at_utd.month()+1)+"&year="+time_at_utd.year()+"&type=day"+time_at_utd.date();
 var urlRef="https://www.utdallas.edu/calendar";
 //url for fetching event details, ex: http://www.utdallas.edu/calendar/event.php?id=1220426040
 var urlEventDetails="http://www.utdallas.edu/calendar/event.php?id=";
@@ -27,7 +25,7 @@ var updateCurrentDateTimeAndUrlWeb = function(){
   now = new Date();
   //getting current_date_time in UTC
   current_date_time = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-  //To make current_date_time match the current date time in dallas.  
+  //To make current_date_time match the current date time in dallas.
   current_date_time.setMinutes(current_date_time.getMinutes()-current_date_time.getTimezoneOffset());
   urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(current_date_time.getMonth()+1)+"&year="+current_date_time.getFullYear()+"&type=day"+current_date_time.getDate();
 };
