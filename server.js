@@ -25,7 +25,7 @@ var urlEventDetails="http://www.utdallas.edu/calendar/event.php?id=";
 var updateCurrentDateTimeAndUrlWeb = function(){
   //Data Variables
   time_at_utd = moment().tz("US/Central");
-  var urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(time_at_utd.month()+1)+"&year="+time_at_utd.year()+"&type=day"+time_at_utd.date();
+  urlWeb="https://www.utdallas.edu/calendar/getEvents.php?month="+(time_at_utd.month()+1)+"&year="+time_at_utd.year()+"&type=day"+time_at_utd.date();
   console.log(urlWeb);
 };
 
